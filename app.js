@@ -30,9 +30,12 @@ app.post('/users', async (req, res) => {
 //     "user_uuid": "e4cf5a4d-548f-4715-9feb-3bfeac87eb1b"
 // }
 app.post('/posts', async(req, res) => {
+    //this is what we put on postman to connect with "User.findOne"
     const { user_uuid, content } = req.body
     try {
         const user = await User.findOne({ where: { uuid: user_uuid }})
+        //user_id comes from the migration and we're using that name
+        //because its what we called the foreign key
         const post = await Post.create({ content, user_id: user.id })
         return res.json(post)
     } catch (err) {
