@@ -44,6 +44,17 @@ app.post('/posts', async(req, res) => {
     }
 })
 
+/////////////////////GET ALL USERS ////////////////////////////
+app.get('/users', async(req, res) => {
+    try {
+        const users = await User.findAll();
+        return res.json(users)
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ err: 'Something went wrong '})
+    }
+})
+
 
 
 
