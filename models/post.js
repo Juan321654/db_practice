@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
       // to pass as an include in app.js [getting users with their post]
       this.belongsTo(User, { foreignKey: 'user_id', as: 'user'})
     }
+    //this will hide the id in post man from users. it does not alter the actual database
+    toJSON(){
+      return {...this.get(), id: undefined, userId: undefined}
+    }
   };
   Post.init({
     uuid: {
