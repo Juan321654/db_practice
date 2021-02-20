@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(Post, {foreignKey: 'user_id', as: 'posts'})
     }
 
+    //this hides the id for users to not be able to see in postman or API
     toJSON(){
       return { ...this.get(), id: undefined}
     }
