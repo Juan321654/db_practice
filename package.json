@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "nodemon": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
@@ -14,5 +14,8 @@
     "sequelize": "^6.5.0",
     "sequelize-cli": "^6.2.0",
     "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }

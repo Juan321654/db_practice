@@ -24,6 +24,63 @@ app.post('/users', async (req, res) => {
     }
 })
 
+/////////////////////GET ALL USERS ////////////////////////////
+app.get('/users', async(req, res) => {
+    try {
+        const users = await User.findAll();
+        return res.json(users)
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ err: 'Something went wrong '})
+    }
+})
+
+//////////////GET A SPECIFIC USER BY ITS UUID, INCLUDING THEIR POSTS////////////
+app.get('/users/:uuid', async(req,res) => {
+    const uuid = req.params.uuid;
+    try {
+        const user = await User.findOne({ where: {uuid}, include: 'posts'})
+        return res.json(user)
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json(err)
+    }
+})
+
+/////////////////////UPDATE USER//////////////////////////////
+// {
+//     "name": "mannny",
+//     "email": "manny@email.com"
+// }
+app.put('/edit/:uuid', async(req, res) => {
+    const uuid = req.params.uuid
+    const { name, email } = req.body
+    try {
+        const user = await User.findOne({ where: { uuid } })
+        user.name = name;
+        user.email = email;
+
+        await user.save()
+        return res.json(user)
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json(err)
+    }
+})
+
+///////////////////////DELETE USER/////////////////////////////
+app.delete('/users/:uuid', async(req, res) => {
+    const uuid = req.params.uuid;
+    try {
+        const user = await User.findOne({ where: {uuid}});
+        await user.destroy()
+        return res.json({ message: ' User deleted!'})
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json(err)
+    }
+})
+
 //////////////// CREATE POST ///////////////////////////
 // {
 //     "content": "bla bla bla",
@@ -44,14 +101,19 @@ app.post('/posts', async(req, res) => {
     }
 })
 
-/////////////////////GET ALL USERS ////////////////////////////
-app.get('/users', async(req, res) => {
+///////////GET POSTS WITH THE USER THAT CREATED IT////////
+app.get('/posts', async(req, res) => {
     try {
-        const users = await User.findAll();
-        return res.json(users)
+        // this will get the post attaching the user model to it and making user in lowercase for convention
+        // const posts = await Post.findAll({ include: [{ model: User, as: 'user'}]}) 
+        //
+        // by defining 'as: user' in the post model
+        // you can just pass 'include: 'user'
+        const posts = await Post.findAll({ include: 'user'});
+        return res.json(posts)
     } catch (err) {
         console.log(err);
-        return res.status(500).json({ err: 'Something went wrong '})
+        return res.status(500).json(err)
     }
 })
 
