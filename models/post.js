@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({ User }) {
       // define association here
+      // by default it will get UserId, but we want lower case for convention so we pass an option
+      // this.belongsTo(User)
+      // to pass as an include in app.js [getting users with their post]
       this.belongsTo(User, { foreignKey: 'user_id', as: 'user'})
     }
   };

@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate({ Post }) {
-      // define association here
+      // to pass as an include in app.js
       this.hasMany(Post, {foreignKey: 'user_id', as: 'posts'})
     }
 
@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING, 
       allowNull: false,
        validate: { 
+         // we can set notNull: true   or we can add a custom message
          notNull: { msg: 'must have a name' }, 
          notEmpty: { msg: 'must not be empty'} 
         } 
